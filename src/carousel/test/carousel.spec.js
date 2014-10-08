@@ -126,6 +126,29 @@ describe('carousel', function() {
       testSlideActive(0);
     });
 
+    it('should call slideChanged handler if specified', function () {
+      scope.slides = [
+        {active:false,content:'one'},
+        {active:false,content:'two'},
+        {active:false,content:'three'}
+      ];
+
+      var changeHandlerCalled = false;
+      scope.onSlideChanged = function(index){
+        changeHandlerCalled = true;
+      };
+      scope.$apply();
+      elm = $compile(
+        '<carousel interval="interval" no-transition="true" slide-changed="onSlideChanged">' +
+          '<slide ng-repeat="slide in slides" active="slide.active">' +
+            '{{slide.content}}' +
+          '</slide>' +
+        '</carousel>'
+        )(scope);
+      scope.$apply('slides[1].active=true');
+      expect(changeHandlerCalled).toBe(true);
+    });
+    
     describe('swiping', function() {
       it('should go next on swipeLeft', function() {
         testSlideActive(0);

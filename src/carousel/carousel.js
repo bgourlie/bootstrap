@@ -60,6 +60,13 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
       }
       self.currentSlide = nextSlide;
       currentIndex = nextIndex;
+
+      if($scope.slideChanged){
+          var slideChangedHandler = $scope.slideChanged();
+          if (slideChangedHandler) {
+            slideChangedHandler(currentIndex);
+          }
+      }
       //every time you change slides, reset the timer
       restartTimer();
     }
@@ -220,7 +227,8 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
     scope: {
       interval: '=',
       noTransition: '=',
-      noPause: '='
+      noPause: '=',
+      slideChanged: '&'
     }
   };
 }])
